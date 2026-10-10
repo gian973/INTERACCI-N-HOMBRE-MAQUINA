@@ -1,7 +1,6 @@
 package pe.imperio.gym.domain;
 import jakarta.persistence.*;
 import java.time.*;
-import java.math.BigDecimal;
 @Entity @Table(name="reset_tokens")
 public class ResetToken {
  @Id @GeneratedValue(strategy=GenerationType.IDENTITY) public Long id;

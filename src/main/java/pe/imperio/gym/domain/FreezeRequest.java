@@ -1,7 +1,6 @@
 package pe.imperio.gym.domain;
 import jakarta.persistence.*;
 import java.time.*;
-import java.math.BigDecimal;
 @Entity @Table(name="freeze_requests")
 public class FreezeRequest {
  @Id @GeneratedValue(strategy=GenerationType.IDENTITY) public Long id;
