@@ -2,9 +2,10 @@ spring:
   application:
     name: imperio-gym
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/imperio?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true}
-    username: ${DB_USER:imperio}
+    url: ${DB_URL:jdbc:h2:file:./data/imperio;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL}
+    username: ${DB_USER:sa}
     password: ${DB_PASSWORD:}
+    driver-class-name: org.h2.Driver
   jpa:
     open-in-view: false
     hibernate:
