@@ -1,0 +1,3 @@
+const {chromium}=require('../.tools/qa/node_modules/playwright');
+const fs=require('node:fs');
+(async()=>{const browser=await chromium.launch({channel:'msedge',headless:true});const page=await browser.newPage();await page.setContent('<html><body></body></html>');await page.addScriptTag({path:require.resolve('../.tools/qa/node_modules/mermaid/dist/mermaid.min.js')});const source=fs.readFileSync('docs/ER.mmd','utf8');const svg=await page.evaluate(async source=>{mermaid.initialize({startOnLoad:false,theme:'neutral',securityLevel:'strict',er:{useMaxWidth:false}});return (await mermaid.render('imperioER',source)).svg;},source);fs.writeFileSync('docs/ER.svg',svg);await browser.close();console.log('ER.svg rendered.');})().catch(e=>{console.error(e);process.exit(1);});

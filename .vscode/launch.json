@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GymApplication<imperio-gym>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "pe.imperio.gym.GymApplication",
+            "projectName": "imperio-gym",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

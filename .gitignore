@@ -1,0 +1,13 @@
+target/
+.tools/
+.env
+.env.local
+.env.*
+!.env.example
+.data/
+*.log
+*.zip
+node_modules/
+__pycache__/
+*.pyc
+/ImperioGym-proyecto.sha256

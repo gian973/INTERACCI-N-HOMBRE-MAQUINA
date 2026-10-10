@@ -1,0 +1,70 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "description": "Configuracion propia de Imperio Gym."
+    },
+    {
+      "name": "app.whatsapp",
+      "description": "Configuracion del proveedor de WhatsApp."
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.uploads",
+      "type": "java.lang.String",
+      "description": "Directorio de almacenamiento de archivos privados."
+    },
+    {
+      "name": "app.public-url",
+      "type": "java.lang.String",
+      "description": "URL publica utilizada en los enlaces de recuperacion de contrasena."
+    },
+    {
+      "name": "app.mail-from",
+      "type": "java.lang.String",
+      "description": "Direccion del remitente de los correos de la aplicacion."
+    },
+    {
+      "name": "app.freeze-policy",
+      "type": "java.lang.String",
+      "description": "Politica de ampliacion de membresias al aprobar un congelamiento."
+    },
+    {
+      "name": "app.demo-password",
+      "type": "java.lang.String",
+      "description": "Contrasena inicial de las cuentas de demostracion."
+    },
+    {
+      "name": "app.development",
+      "type": "java.lang.Boolean",
+      "defaultValue": false,
+      "description": "Activa las funciones de desarrollo, incluidos los enlaces de recuperacion locales."
+    },
+    {
+      "name": "app.whatsapp.provider",
+      "type": "java.lang.String",
+      "description": "Proveedor de WhatsApp: simulated o business."
+    },
+    {
+      "name": "app.whatsapp.token",
+      "type": "java.lang.String",
+      "description": "Token de acceso a la API de WhatsApp Business."
+    },
+    {
+      "name": "app.whatsapp.phone-id",
+      "type": "java.lang.String",
+      "description": "Identificador del numero de telefono de WhatsApp Business."
+    },
+    {
+      "name": "app.whatsapp.template",
+      "type": "java.lang.String",
+      "description": "Nombre de la plantilla de recordatorios de WhatsApp."
+    },
+    {
+      "name": "app.whatsapp.api-version",
+      "type": "java.lang.String",
+      "description": "Version de la API utilizada por WhatsApp Business."
+    }
+  ]
+}

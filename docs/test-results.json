@@ -1,0 +1,32 @@
+{
+  "h2": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "build": "SUCCESS"
+  },
+  "mysql": {
+    "tests": 14,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "build": "SUCCESS"
+  },
+  "testCases": [
+    "preferencesRescheduleAndCancelOldExpiry",
+    "dueRemindersAreSimulatedOnceAndExpiredTokensFail",
+    "recoveryTokenIsSingleUseAndHashed",
+    "uploadsAndDatesAreValidatedAndRolledBack",
+    "pagesRenderForBothRoles",
+    "concurrentIdenticalPaymentAppliesOnce",
+    "visitorRegistrationPreservesPlanAndCardPaymentIsIdempotent",
+    "manualConfirmationRenewalAndRejectionAreAtomic",
+    "permissionsCsrfAndFilesAreEnforced",
+    "calendarMonthsClampWithoutOverflow",
+    "catalogChangesKeepContractHistory",
+    "freezeRequiresReviewAndResponseIsVisible",
+    "configurableFreezeExtendsExactlyOnce",
+    "concurrentDifferentManualApprovalsDoNotLoseMonths"
+  ]
+}

@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="2280" height="2930" viewBox="0 0 2280 2930"><defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#555" /></marker></defs><rect width="2280" height="2930" fill="#fafafa" />
+<text x="50" y="58" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#222">IMPERIO GYM · WEB · PROPUESTA INSPIRADA EN SMART FIT</text>
+<text x="50" y="96" font-family="Arial, sans-serif" font-size="19" font-weight="400" fill="#222">Versión WEB · 7 pantallas · Catálogo público y portal de autoservicio · Datos ficticios</text>
+<text x="50" y="126" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#222">Flujo: 01 → 02 → 03 → 04 → 05 · Desde Mi cuenta: 06 Renovación / 07 Solicitudes · Datos ficticios de ejemplo</text>
+<rect x="50" y="160" width="680" height="640" rx="0" fill="#fff" stroke="#999" />
+<rect x="50" y="160" width="680" height="46" rx="0" fill="#ededed" stroke="#999" />
+<text x="70" y="190" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">01  Página pública y planes</text>
+<text x="58" y="835" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Solicitar plan abre 02 y conserva la membresía elegida. Planes visibles sin</text>
+<text x="58" y="858" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">recorrer el slider.</text>
+<text x="74" y="232" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#222">IMPERIO GYM</text>
+<text x="264" y="232" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#222">Inicio   Servicios   Sedes   Planes</text>
+<rect x="524" y="208" width="178" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="536" y="233" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Ingresar / Registrarse</text>
+<text x="74" y="294" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#222">Compara nuestros planes</text>
+<text x="74" y="322" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#222">Consulta beneficios y contrata dentro del portal.</text>
+<rect x="74" y="350" width="200" height="238" rx="0" fill="#f7f7f7" stroke="#999" />
+<text x="90" y="383" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#222">Plan Mensual</text>
+<text x="90" y="415" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#222">S/ 89.99</text>
+<text x="90" y="445" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Duración: 1 mes</text>
+<text x="90" y="474" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">• Sala de musculación</text>
+<text x="90" y="499" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">• Clases grupales</text>
+<rect x="90" y="524" width="168" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="102" y="549" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Solicitar plan → 02</text>
+<rect x="290" y="350" width="200" height="238" rx="0" fill="#f7f7f7" stroke="#999" />
+<text x="306" y="383" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#222">Plan 2 meses</text>
+<text x="306" y="415" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#222">S/ 114.99</text>
+<text x="306" y="445" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Duración: 2 meses</text>
+<text x="306" y="474" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">• Sala de musculación</text>
+<text x="306" y="499" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">• Clases grupales</text>
+<rect x="306" y="524" width="168" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="318" y="549" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Solicitar plan → 02</text>
+<rect x="506" y="350" width="200" height="238" rx="0" fill="#f7f7f7" stroke="#999" />
+<text x="522" y="383" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#222">Plan 3 meses</text>
+<text x="522" y="415" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#222">S/ 179.99</text>
+<text x="522" y="445" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Duración: 3 meses</text>
+<text x="522" y="474" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">• Sala de musculación</text>
+<text x="522" y="499" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">• Clases grupales</text>
+<rect x="522" y="524" width="168" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="534" y="549" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Solicitar plan → 02</text>
+<rect x="74" y="612" width="215" height="116" rx="0" fill="#eee" stroke="#999" />
+<text x="94" y="673" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">[ Imagen de instalaciones ]</text>
+<text x="314" y="644" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">Servicios y sedes</text>
+<text x="314" y="676" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Consulta instalaciones, horarios y</text>
+<text x="314" y="699" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">ubicación. Acceso desde el menú</text>
+<text x="314" y="722" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">superior.</text>
+<text x="74" y="767" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Ayuda por WhatsApp (opcional) · No interrumpe la contratación</text>
+<rect x="800" y="160" width="680" height="640" rx="0" fill="#fff" stroke="#999" />
+<rect x="800" y="160" width="680" height="46" rx="0" fill="#ededed" stroke="#999" />
+<text x="820" y="190" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">02  Modal de identificación</text>
+<text x="808" y="835" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Foco inicial en el título; Tab recorre campos. Esc cierra el modal y</text>
+<text x="808" y="858" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">conserva el plan. No usar DNI como contraseña.</text>
+<rect x="824" y="232" width="630" height="520" rx="0" fill="#f3f3f3" stroke="#999" />
+<rect x="896" y="244" width="486" height="495" rx="0" fill="#fff" stroke="#999" />
+<text x="918" y="276" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#222">Continúa con tu plan</text>
+<text x="1349" y="276" font-family="Arial, sans-serif" font-size="24" font-weight="400" fill="#222">×</text>
+<text x="918" y="307" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#222">Seleccionado: Plan 3 meses · S/ 179.99</text>
+<rect x="918" y="328" width="205" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="930" y="353" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Iniciar sesión</text>
+<rect x="1137" y="328" width="221" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="1149" y="353" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Crear cuenta</text>
+<text x="918" y="394" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Correo o DNI (identificador)</text>
+<rect x="918" y="403" width="440" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="928" y="427" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">juan.perez@ejemplo.com</text>
+<text x="918" y="467" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Contraseña</text>
+<rect x="918" y="476" width="440" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="928" y="500" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">••••••••</text>
+<text x="918" y="538" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Olvidé mi contraseña → Recuperar acceso</text>
+<text x="918" y="569" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Error: revisa tu correo/DNI o contraseña.</text>
+<rect x="918" y="589" width="440" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="930" y="614" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Continuar → 03</text>
+<text x="918" y="653" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Registro: nombre, DNI, correo y contraseña.</text>
+<text x="918" y="682" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Validar campos y aceptación de condiciones.</text>
+<text x="824" y="785" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Al ingresar correctamente se recupera el plan elegido.</text>
+<rect x="1550" y="160" width="680" height="640" rx="0" fill="#fff" stroke="#999" />
+<rect x="1550" y="160" width="680" height="46" rx="0" fill="#ededed" stroke="#999" />
+<text x="1570" y="190" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">03  Contratación y pago</text>
+<text x="1558" y="835" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Volver conserva datos. Tarjeta: confirmación del proveedor. Yape/Plin o</text>
+<text x="1558" y="858" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">transferencia: comprobante y revisión.</text>
+<text x="1574" y="232" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#222">Plan  →  Identificación  →  Pago  →  Confirmación</text>
+<text x="1574" y="256" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666">Paso actual: Pago</text>
+<rect x="1574" y="287" width="632" height="73" rx="0" fill="#f5f5f5" stroke="#999" />
+<text x="1590" y="314" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#222">Plan 3 meses · Duración: 3 meses</text>
+<text x="1590" y="342" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#222">Total: S/ 179.99 · Usuario: Juan Pérez (ejemplo)</text>
+<text x="1574" y="389" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#222">Selecciona un método de pago</text>
+<rect x="1574" y="410" width="196" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="1586" y="435" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Tarjeta</text>
+<rect x="1785" y="410" width="196" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="1797" y="435" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Yape / Plin</text>
+<rect x="1996" y="410" width="210" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="2008" y="435" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Transferencia</text>
+<text x="1574" y="479" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Número de operación</text>
+<rect x="1574" y="488" width="300" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="1584" y="512" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">YP-123456 (ejemplo)</text>
+<text x="1898" y="479" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Adjuntar comprobante</text>
+<rect x="1898" y="488" width="308" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="1908" y="512" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">Seleccionar archivo</text>
+<text x="1574" y="543" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#222">Pago pendiente de validación: tu plan aún no se activa.</text>
+<text x="1574" y="576" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">[ ] Acepto las condiciones de la membresía.</text>
+<rect x="1574" y="605" width="190" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="1586" y="630" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">← Volver a 02</text>
+<rect x="1790" y="605" width="416" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="1802" y="630" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Enviar solicitud de pago → 04</text>
+<text x="1574" y="676" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Cargando: enviando solicitud… Evitar envíos duplicados.</text>
+<text x="1574" y="707" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Error: falta el comprobante. Adjunta el archivo y reintenta.</text>
+<text x="1574" y="746" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Tarjeta: campos de número, vencimiento y CVV.</text>
+<text x="1574" y="772" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">No guardar datos de tarjeta en este prototipo.</text>
+<rect x="1550" y="920" width="680" height="640" rx="0" fill="#fff" stroke="#999" />
+<rect x="1550" y="920" width="680" height="46" rx="0" fill="#ededed" stroke="#999" />
+<text x="1570" y="950" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">04  Confirmación de la solicitud</text>
+<text x="1558" y="1595" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Confirmar una solicitud no equivale a confirmar el pago. Ir a mi cuenta</text>
+<text x="1558" y="1618" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">abre 05.</text>
+<text x="1574" y="992" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#222">Plan  →  Identificación  →  Pago  →  Confirmación</text>
+<text x="1574" y="1016" font-family="Arial, sans-serif" font-size="13" font-weight="400" fill="#666">Paso actual: Confirmación</text>
+<rect x="1574" y="1058" width="632" height="233" rx="0" fill="#f6f6f6" stroke="#999" />
+<text x="1594" y="1095" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#222">Solicitud recibida</text>
+<text x="1594" y="1131" font-family="Arial, sans-serif" font-size="19" font-weight="400" fill="#222">Plan 3 meses · Importe: S/ 179.99</text>
+<text x="1594" y="1163" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#222">Estado del pago: PENDIENTE DE VALIDACIÓN</text>
+<text x="1594" y="1195" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#222">Revisaremos el comprobante. Consulta el resultado en Mi cuenta.</text>
+<text x="1594" y="1218" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#222">La membresía se activará al confirmar el pago.</text>
+<rect x="1574" y="1319" width="632" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="1586" y="1344" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Ir a mi cuenta → 05</text>
+<text x="1574" y="1402" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">Variante con pago confirmado</text>
+<text x="1574" y="1435" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#222">Pago confirmado. Membresía activa del 05/10/2026 al 05/01/2027.</text>
+<text x="1574" y="1458" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#222">Consulta el detalle y tu comprobante en Mi cuenta.</text>
+<text x="1574" y="1527" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Mensaje de éxito + número de solicitud visible.</text>
+<rect x="800" y="920" width="680" height="640" rx="0" fill="#fff" stroke="#999" />
+<rect x="800" y="920" width="680" height="46" rx="0" fill="#ededed" stroke="#999" />
+<text x="820" y="950" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">05  Panel del socio</text>
+<text x="808" y="1595" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Ejemplo al 05/10/2026. Próxima a vencer: umbral ilustrativo de 7 días.</text>
+<text x="808" y="1618" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Estados siempre acompañados de texto.</text>
+<text x="824" y="992" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#222">IMPERIO GYM / MI CUENTA</text>
+<text x="1244" y="992" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Perfil   Cerrar sesión</text>
+<text x="824" y="1044" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="#222">Hola, Juan Pérez</text>
+<text x="824" y="1071" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">Datos ficticios para la exposición académica</text>
+<rect x="824" y="1096" width="632" height="139" rx="0" fill="#f5f5f5" stroke="#999" />
+<text x="840" y="1127" font-family="Arial, sans-serif" font-size="21" font-weight="700" fill="#222">Membresía actual: Plan mensual</text>
+<text x="840" y="1158" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#222">Estado: PRÓXIMA A VENCER</text>
+<text x="840" y="1188" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#222">Vencimiento: 10/10/2026 · Quedan 5 días</text>
+<text x="840" y="1215" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Fecha de referencia: 05/10/2026</text>
+<rect x="824" y="1259" width="306" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="836" y="1284" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Renovar membresía → 06</text>
+<rect x="1150" y="1259" width="306" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="1162" y="1284" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Cambiar plan → 06</text>
+<rect x="824" y="1316" width="306" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="836" y="1341" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Historial de pagos ↓</text>
+<rect x="1150" y="1316" width="306" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="1162" y="1341" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Mis solicitudes → 07</text>
+<text x="824" y="1397" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">Historial de pagos</text>
+<rect x="824" y="1414" width="632" height="75" rx="0" fill="#fff" stroke="#999" />
+<text x="838" y="1441" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">05/09/2026   Mensual   S/ 89.99   Confirmado</text>
+<text x="838" y="1470" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">05/10/2026   3 meses   S/ 179.99   Pendiente</text>
+<text x="824" y="1528" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Variantes: ACTIVA | PRÓXIMA A VENCER | VENCIDA</text>
+<rect x="50" y="920" width="680" height="640" rx="0" fill="#fff" stroke="#999" />
+<rect x="50" y="920" width="680" height="46" rx="0" fill="#ededed" stroke="#999" />
+<text x="70" y="950" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">06  Renovación de membresía</text>
+<text x="58" y="1595" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Renovación enviada queda pendiente. Actualizar vencimiento únicamente</text>
+<text x="58" y="1618" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">después de confirmar el pago.</text>
+<text x="74" y="992" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">← Mi cuenta (05)</text>
+<text x="74" y="1034" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#222">Renueva o cambia tu plan</text>
+<text x="74" y="1068" font-family="Arial, sans-serif" font-size="17" font-weight="400" fill="#222">Actual: Mensual · Vence el 10/10/2026</text>
+<text x="74" y="1111" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#222">Selecciona duración</text>
+<rect x="74" y="1132" width="200" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="86" y="1157" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Mensual · S/ 89.99</text>
+<rect x="290" y="1132" width="200" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="302" y="1157" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">2 meses · S/ 114.99</text>
+<rect x="506" y="1132" width="200" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="518" y="1157" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">3 meses · S/ 179.99</text>
+<text x="74" y="1204" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#222">Método de pago</text>
+<rect x="74" y="1223" width="196" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="86" y="1248" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Tarjeta</text>
+<rect x="285" y="1223" width="196" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="297" y="1248" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Yape / Plin</text>
+<rect x="496" y="1223" width="210" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="508" y="1248" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Transferencia</text>
+<text x="74" y="1293" font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#222">Resumen: 3 meses · Total S/ 179.99</text>
+<text x="74" y="1324" font-family="Arial, sans-serif" font-size="16" font-weight="400" fill="#222">Inicio propuesto: 10/10/2026 · Fin: 10/01/2027</text>
+<rect x="74" y="1355" width="632" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="86" y="1380" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Solicitar renovación → Confirmación (04)</text>
+<text x="74" y="1430" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#222">Pendiente: solicitud recibida; vencimiento sin cambios.</text>
+<text x="74" y="1467" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="#222">Confirmada: nueva vigencia visible en Mi cuenta.</text>
+<text x="74" y="1515" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Comprobante requerido según el método de pago.</text>
+<rect x="50" y="1680" width="680" height="640" rx="0" fill="#fff" stroke="#999" />
+<rect x="50" y="1680" width="680" height="46" rx="0" fill="#ededed" stroke="#999" />
+<text x="70" y="1710" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">07  Solicitudes administrativas</text>
+<text x="58" y="2355" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Enviar genera estado Enviada. La revisión decide Aprobada o Rechazada; no</text>
+<text x="58" y="2378" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">hay aprobación automática.</text>
+<text x="74" y="1752" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">← Mi cuenta (05)</text>
+<text x="74" y="1792" font-family="Arial, sans-serif" font-size="25" font-weight="700" fill="#222">Solicitar congelamiento</text>
+<rect x="74" y="1814" width="306" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="86" y="1839" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Por salud</text>
+<rect x="400" y="1814" width="306" height="38" rx="3" fill="#f3f3f3" stroke="#333" />
+<text x="412" y="1839" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Por viaje</text>
+<text x="74" y="1882" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Fecha de inicio</text>
+<rect x="74" y="1891" width="306" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="84" y="1915" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">12/10/2026</text>
+<text x="400" y="1882" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Fecha de fin</text>
+<rect x="400" y="1891" width="306" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="410" y="1915" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">19/10/2026</text>
+<text x="74" y="1959" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Motivo</text>
+<rect x="74" y="1968" width="632" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="84" y="1992" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">Escribe el motivo de tu solicitud</text>
+<text x="74" y="2037" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">Documento adjunto (si corresponde)</text>
+<rect x="74" y="2046" width="632" height="35" rx="0" fill="#fff" stroke="#999" />
+<text x="84" y="2070" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#666">Seleccionar archivo</text>
+<rect x="74" y="2102" width="632" height="38" rx="3" fill="#333" stroke="#333" />
+<text x="86" y="2127" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#fff">Enviar solicitud</text>
+<text x="74" y="2162" font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#222">Seguimiento de solicitudes</text>
+<rect x="74" y="2180" width="632" height="64" rx="0" fill="#fff" stroke="#999" />
+<text x="86" y="2206" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">SOL-001 (ejemplo) · Por viaje · EN REVISIÓN</text>
+<text x="86" y="2231" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Enviada → En revisión → Aprobada / Rechazada</text>
+<text x="74" y="2278" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Rechazada: mostrar motivo y opción de corregir.</text>
+<text x="74" y="2302" font-family="Arial, sans-serif" font-size="14" font-weight="400" fill="#222">Validación: la fecha final debe ser posterior a la inicial.</text>
+<path d="M732,480 L790,480" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+<path d="M1482,480 L1540,480" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+<path d="M1890,875 L1890,910" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+<path d="M1542,1240 L1492,1240" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+<path d="M792,1240 L742,1240" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)" />
+<path d="M1140,1562 L1140,1660 L770,1660 L770,2000 L742,2000" stroke="#555" stroke-width="2" fill="none" marker-end="url(#arrow)" /><text x="810" y="1650" font-family="Arial" font-size="14">Mis solicitudes → 07</text>
+<text x="50" y="2412" font-family="Arial, sans-serif" font-size="17" font-weight="700" fill="#222">IHM: visibilidad del estado · correspondencia entre acción y resultado · control del usuario · consistencia · prevención de errores</text>
+<text x="50" y="2440" font-family="Arial, sans-serif" font-size="15" font-weight="400" fill="#222">Accesibilidad: etiquetas persistentes, foco visible, orden de teclado lógico y mensajes que no dependen del color. Prototipo conceptual.</text>
+<text x="900" y="1780" font-family="Arial" font-size="24" fill="#333">CRITERIOS DE INTERACCIÓN</text><text x="900" y="1836" font-family="Arial" font-size="19" fill="#333">Solicitar plan inicia contratación y conserva la selección.</text><text x="900" y="1892" font-family="Arial" font-size="19" fill="#333">Confirmación de solicitud y confirmación de pago son estados distintos.</text><text x="900" y="1948" font-family="Arial" font-size="19" fill="#333">Desde Mi cuenta se accede a renovar o gestionar solicitudes.</text><text x="900" y="2004" font-family="Arial" font-size="19" fill="#333">WhatsApp queda como canal de ayuda opcional.</text><text x="900" y="2060" font-family="Arial" font-size="19" fill="#333">Todos los elementos son texto y formas editables.</text><rect x="800" y="2130" width="1400" height="260" rx="4" fill="#f4f4f4" stroke="#999" /><text x="824" y="2170" font-family="Arial" font-size="24" font-weight="700" fill="#222">08 · MI CUENTA / RECORDATORIOS POR WHATSAPP</text><text x="824" y="2214" font-family="Arial" font-size="17" font-weight="700" fill="#222">Número de WhatsApp</text><rect x="824" y="2228" width="350" height="44" rx="4" fill="#fff" stroke="#999" /><text x="836" y="2257" font-family="Arial" font-size="17" font-weight="400" fill="#222">+51 999 000 000 (ejemplo)</text><text x="1210" y="2252" font-family="Arial" font-size="20" font-weight="700" fill="#222">[✓] Recibir avisos de vencimiento</text><text x="1210" y="2288" font-family="Arial" font-size="17" font-weight="400" fill="#222">7 días antes y 1 día antes · Desactivar cuando quieras</text><rect x="1810" y="2228" width="355" height="50" rx="4" fill="#ddd" stroke="#999" /><text x="1825" y="2261" font-family="Arial" font-size="18" font-weight="700" fill="#222">Guardar preferencias</text><text x="824" y="2345" font-family="Arial" font-size="17" font-weight="400" fill="#222">Tras renovar, cancelar los avisos de la fecha anterior. Envío automático sujeto a integración.</text><rect x="50" y="2510" width="2150" height="240" rx="4" fill="#fff" stroke="#999" /><text x="80" y="2555" font-family="Arial" font-size="24" font-weight="700" fill="#222">EJEMPLO DEL RECORDATORIO QUE RECIBIRÁ EL SOCIO</text><text x="80" y="2602" font-family="Arial" font-size="22" font-weight="400" fill="#222">Imperio Gym: Hola, Juan. Tu membresía vence el 10/10/2026. Quedan 5 días.</text><text x="80" y="2640" font-family="Arial" font-size="20" font-weight="400" fill="#222">Puedes consultar tu estado y renovar desde Mi cuenta.</text><rect x="80" y="2660" width="320" height="54" rx="4" fill="#ddd" stroke="#999" /><text x="96" y="2696" font-family="Arial" font-size="20" font-weight="700" fill="#222">Renovar en el portal → 06</text><text x="50" y="2840" font-family="Arial" font-size="18" font-weight="400" fill="#222">Referencia: comparación de planes de Smart Fit Perú. Identidad, precios y funciones del proyecto Imperio Gym.</text></svg>
