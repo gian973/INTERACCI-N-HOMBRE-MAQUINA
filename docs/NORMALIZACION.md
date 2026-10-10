@@ -1,7 +1,7 @@
 # Análisis relacional de 1FN a 5FN
 
 ## Alcance y supuestos
-El análisis cubre las 17 relaciones persistentes despu?s de V1?V3; Flyway mantiene aparte su tabla técnica. No se equiparan formas normales con cantidad de tablas. Las dependencias se deducen de las reglas del dominio, no de coincidencias del catálogo de demostración. Las claves artificiales no prueban por sí solas 3FN, 4FN o 5FN.
+El análisis cubre las relaciones persistentes después de V1–V5; Flyway mantiene aparte su tabla técnica. No se equiparan formas normales con cantidad de tablas. Las dependencias se deducen de las reglas del dominio, no de coincidencias del catálogo de demostración. Las claves artificiales no prueban por sí solas 3FN, 4FN o 5FN.
 
 Cada usuario tiene correo y DNI únicos; puede tener varios roles. Un plan puede tener varios beneficios compartidos con otros planes. Cada pago corresponde a un usuario y un plan; su nombre, duración, importe y beneficios son una instantánea contractual que permanece aunque cambie el catálogo. El cambio de plan se aplica al confirmarse. Hay una sola membresía corriente por usuario y operaciones históricas separadas. No existe una relación ternaria independiente entre usuario, sede y plan.
 
@@ -18,7 +18,9 @@ En la tabla, K → resto significa que cada clave candidata indicada determina t
 | plan_benefits | (plan_id,benefit_id) es la clave completa; no hay atributos no clave. |
 | payments | id e idempotency_key son claves. En el subconjunto manual, (method,operation_number) también es clave. Cada una → user_id,plan_id,instantánea contractual,estado,fechas. plan_id NO → plan_name/months/amount: dos contratos del mismo plan pueden tener términos distintos. |
 | contract_benefits | id y (payment_id,label) son claves. Se conserva el texto contratado; no depende del texto actual de benefits. |
-| memberships | id, user_id y payment_id son claves alternativas. Cada una → started_on,expires_on y las demás claves. expires_on no es derivable del último pago porque acumula períodos anteriores y extensiones aprobadas. |
+| memberships | id, user_id y payment_id son claves alternativas. Cada una → branch_id,started_on,expires_on y las demás claves. expires_on no es derivable del último pago porque acumula períodos anteriores y extensiones aprobadas. |
+| branches | id y name son claves alternativas; cada una → active,capacity. |
+| attendance | id → branch_id,user_id,checked_in_at,checked_out_at. La visita es un evento; las validaciones de membresía vigente, sede coincidente y entrada abierta pertenecen al servicio transaccional. |
 | freeze_requests | id → user_id,kind,starts_on,ends_on,comment,status,created_at,policy,extension_days. Política y extensión son resultado histórico de una decisión, no función universal del período: antes de aprobar son null/0 y distintas políticas producen resultados distintos. |
 | private_files | id y storage_key son claves globales. Para el subtipo comprobante, payment_id no nulo es clave; para el subtipo adjunto, request_id no nulo es clave. Estas claves determinan owner_id y metadatos. No hay varios archivos por el mismo padre. |
 | reviews | id → padre exclusivo,reviewer_id,from_status,to_status,comment,created_at. Un padre admite varias revisiones; no determina actor ni respuesta. |
@@ -50,7 +52,7 @@ No basta decir que no hay tablas ternarias. Para cada grupo:
 
 - user_roles y plan_benefits: descomponer en proyecciones unarias y volver a unir produce el producto cartesiano y asignaciones inexistentes. No hay una JD no trivial admitida por el negocio; el hecho es la pareja.
 - contract_benefits: (payment_id,label) es un hecho irreducible. Proyectar ambos por separado inventaría beneficios en otros contratos. El id es una clave alternativa, no un tercer hecho independiente.
-- payments, freeze_requests, reviews y audit_events: cada fila representa una operación/evento. Unir proyecciones que omiten su clave combina importes, estados, actores o respuestas de eventos diferentes y puede crear filas falsas. No existe regla que valide tales combinaciones. Proyecciones que conservan la clave tienen joins sin pérdida implicados por esa clave.
+- payments, freeze_requests, reviews, attendance y audit_events: cada fila representa una operación/evento. Unir proyecciones que omiten su clave combina importes, estados, actores o respuestas de eventos diferentes y puede crear filas falsas. No existe regla que valide tales combinaciones. Proyecciones que conservan la clave tienen joins sin pérdida implicados por esa clave.
 - reminders: no se admite la JD de pares (usuario,vencimiento), (usuario,anticipación), (vencimiento,anticipación). Contraejemplo permitido: (u1,e1,7), (u1,e2,1), (u2,e1,1). La unión de pares produciría (u1,e1,1) que no estaba programado. Por tanto esa JD no es una restricción del dominio.
 - users, roles, plans, benefits, memberships, preferences, private_files y reset_tokens: atributos escalares describen un objeto identificado por una clave; no hay regla que reconstruya combinaciones sin ella. En archivos el padre alternativo único identifica el hecho dentro del subtipo. Las JD conocidas son triviales o consecuencias de las claves candidatas.
 

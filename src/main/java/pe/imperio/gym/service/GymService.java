@@ -18,20 +18,23 @@ public class GymService {
  public GymService(Store db,FileService files,ReminderService reminders,Clock clock){this.db=db;this.files=files;this.reminders=reminders;this.clock=clock;}
  public LocalDate today(){return LocalDate.now(clock);}
  public Optional<Membership> membership(Long user){return db.one(Membership.class,"select m from Membership m where m.userId=?1",user);}
+ public List<Branch> branches(){return db.list(Branch.class,"select b from Branch b where b.active=true order by b.id");}
  public List<String> benefits(Long plan){return db.em().createNativeQuery("select b.label from benefits b join plan_benefits pb on pb.benefit_id=b.id where pb.plan_id=?1 order by b.id",String.class).setParameter(1,plan).getResultList();}
  public record Draft(Long planId,String name,int months,BigDecimal price,List<String> benefits,String key) implements java.io.Serializable {}
  public Draft draft(Long planId){var p=db.get(Plan.class,planId);if(!p.active)throw new IllegalArgumentException("Este plan ya no está disponible.");return new Draft(p.id,p.name,p.months,p.price,benefits(p.id),UUID.randomUUID().toString());}
  public LocalDate proposedFrom(Long user){return membership(user).map(m->m.expiresOn.isAfter(today())?m.expiresOn:today()).orElse(today());}
  public static LocalDate addMonths(LocalDate base,int months){return base.plusMonths(months);}
- public Payment pay(Long user,Draft draft,String method,String operation,MultipartFile proof){
+ public Payment pay(Long user,Long branchId,Draft draft,String method,String operation,MultipartFile proof){
   db.lock(UserAccount.class,user);
   var existing=db.one(Payment.class,"select p from Payment p where p.idempotencyKey=?1",draft.key());
   if(existing.isPresent()){owned(existing.get().userId,user);return existing.get();}
+  if(branchId==null)throw new IllegalArgumentException("Selecciona la sede donde entrenarás.");
+  var branch=db.one(Branch.class,"select b from Branch b where b.id=?1 and b.active=true",branchId).orElseThrow(()->new IllegalArgumentException("Selecciona una sede disponible."));
   if(!Set.of("CARD_TEST","WALLET","TRANSFER").contains(method))throw new IllegalArgumentException("Selecciona un método válido.");
   var plan=db.get(Plan.class,draft.planId());if(!plan.active)throw new IllegalArgumentException("El plan fue desactivado. Elige otro.");
   if(!method.equals("CARD_TEST")&&(operation==null||!operation.matches("[A-Za-z0-9-]{4,80}")))throw new IllegalArgumentException("Ingresa un número de operación de 4 a 80 caracteres.");
   if(!method.equals("CARD_TEST")&&db.count("select count(p) from Payment p where p.method=?1 and p.operationNumber=?2",method,operation)>0)throw new IllegalArgumentException("Ese número de operación ya fue registrado.");
-  var p=new Payment();p.userId=user;p.planId=draft.planId();p.planName=draft.name();p.months=draft.months();p.amount=draft.price();p.method=method;p.status="PENDING";p.operationNumber=method.equals("CARD_TEST")?null:operation;p.idempotencyKey=draft.key();p.createdAt=clock.instant();db.save(p);
+  var p=new Payment();p.userId=user;p.branchId=branch.id;p.branchName=branch.name;p.planId=draft.planId();p.planName=draft.name();p.months=draft.months();p.amount=draft.price();p.method=method;p.status="PENDING";p.operationNumber=method.equals("CARD_TEST")?null:operation;p.idempotencyKey=draft.key();p.createdAt=clock.instant();db.save(p);
   for(String label:draft.benefits()){var b=new ContractBenefit();b.paymentId=p.id;b.label=label;db.save(b);}
   if(!method.equals("CARD_TEST"))files.save(proof,user,p.id,null);
   audit(user,"PAYMENT_CREATED","payment",p.id,method);
@@ -43,7 +46,7 @@ public class GymService {
   var m=db.currentOne(Membership.class,"select m from Membership m where m.userId=?1",p.userId).orElseGet(()->{var n=new Membership();n.userId=p.userId;n.startedOn=today();return n;});
   LocalDate base=m.expiresOn!=null&&m.expiresOn.isAfter(today())?m.expiresOn:today();
   if(m.expiresOn!=null&&!m.expiresOn.isAfter(today()))m.startedOn=today();
-  m.paymentId=p.id;m.expiresOn=addMonths(base,p.months);p.appliedFrom=base;p.status="CONFIRMED";if(m.id==null)db.save(m);reminders.refresh(p.userId,m.expiresOn);
+  m.paymentId=p.id;m.branchId=p.branchId;m.expiresOn=addMonths(base,p.months);p.appliedFrom=base;p.status="CONFIRMED";if(m.id==null)db.save(m);reminders.refresh(p.userId,m.expiresOn);
  }
  @PreAuthorize("hasRole('ADMIN')")
  public void reviewPayment(Long id,Long admin,boolean approve,String comment){

@@ -24,10 +24,11 @@ public class IdentityService {
  @Value("${app.mail-from}") String mailFrom;
  public IdentityService(Store db,UserRepository users,PasswordEncoder encoder,Clock clock,ObjectProvider<JavaMailSender> mail){this.db=db;this.users=users;this.encoder=encoder;this.clock=clock;this.mail=mail;}
  public UserAccount current(Authentication a){if(a==null)throw new org.springframework.security.access.AccessDeniedException("Acceso denegado");return users.findByEmailIgnoreCaseOrDni(a.getName(),a.getName()).orElseThrow();}
+ public boolean isRegistered(String email,String dni){return users.existsByEmailIgnoreCaseOrDni(email.strip(),dni);}
  public UserAccount register(Forms.Registration f){
   if(!f.password().equals(f.confirmation()))throw new IllegalArgumentException("La confirmación no coincide.");
   if(f.password().equals(f.dni()))throw new IllegalArgumentException("El DNI no puede ser tu contraseña.");
-  if(users.existsByEmailIgnoreCaseOrDni(f.email().strip(),f.dni()))throw new IllegalArgumentException("El correo o DNI ya está registrado.");
+  if(isRegistered(f.email(),f.dni()))throw new IllegalArgumentException("El correo o DNI ya está registrado.");
   var u=new UserAccount();u.name=f.name().strip();u.dni=f.dni();u.email=f.email().strip().toLowerCase(Locale.ROOT);u.phone=f.phone();u.passwordHash=encoder.encode(f.password());u.createdAt=clock.instant();db.save(u);
   var role=new UserRoleEntry();role.userId=u.id;role.roleId=1L;db.save(role);
   var p=new Preference();p.userId=u.id;p.phone=u.phone;p.consent=false;p.notice7=true;p.notice1=true;db.save(p);return u;

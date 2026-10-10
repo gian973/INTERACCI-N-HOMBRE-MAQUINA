@@ -1,8 +1,30 @@
 <!doctype html><html lang="es" xmlns:th="http://www.thymeleaf.org"><head th:fragment="head(title)"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title th:text="${title}+' · Imperio Gym'"></title><link rel="stylesheet" th:href="@{/css/prototype.css}"><link rel="stylesheet" th:href="@{/css/app.css}"><script th:src="@{/js/app.js}" defer></script></head><body>
-<header class="site-header" th:fragment="header"><a href="#main" class="skip-link">Saltar al contenido</a><div class="header-inner"><a class="logo" href="/" aria-label="Imperio Gym, inicio"><span class="logo-mark">IG</span><span>IMPERIO <b>GYM</b></span></a><nav aria-label="Navegación principal"><a href="/#inicio">Inicio</a><a href="/#servicios">Servicios</a><a href="/#sedes">Sedes</a><a href="/#planes">Planes</a></nav><div class="header-actions"><a th:if="${!signedIn}" class="btn btn-secondary header-login" href="/login"><svg aria-hidden="true" class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Ingresar / Registrarse</span></a><a th:if="${signedIn}" class="btn btn-secondary" th:href="${isAdmin?'/admin':'/account'}" th:text="${isAdmin?'Administrar':'Mi cuenta'}"></a><form th:if="${signedIn}" th:action="@{/logout}" method="post"><button class="btn btn-ghost">Salir</button></form></div></div><details class="mobile-nav"><summary>Menú</summary><a href="/#inicio">Inicio</a><a href="/#servicios">Servicios</a><a href="/#sedes">Sedes</a><a href="/#planes">Planes</a></details></header>
+<header class="site-header" th:fragment="header">
+  <a href="#main" class="skip-link">Saltar al contenido</a>
+  <div class="header-inner">
+    <a class="logo" href="/" aria-label="Imperio Gym, inicio"><span class="logo-mark">IG</span><span>IMPERIO <b>GYM</b></span></a>
+    <nav aria-label="Navegación principal"><a href="/#inicio">Inicio</a><a href="/#servicios">Servicios</a><a href="/#sedes">Sedes</a><a href="/#planes">Planes</a></nav>
+    <div class="header-actions">
+      <a th:if="${!signedIn}" class="btn btn-secondary header-login" href="/login"><svg aria-hidden="true" class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Ingresar / Registrarse</span></a>
+      <a th:if="${signedIn}" class="btn btn-secondary" th:href="${isAdmin?'/admin':'/account'}" th:text="${isAdmin?'Administrar':'Mi cuenta'}"></a>
+      <form th:if="${signedIn}" th:action="@{/logout}" method="post"><button class="btn btn-ghost">Salir</button></form>
+    </div>
+    <details class="mobile-nav">
+      <summary aria-label="Menú de navegación"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg><span>Menú</span></summary>
+      <div class="mobile-nav-panel">
+        <nav aria-label="Navegación móvil"><a href="/#inicio">Inicio</a><a href="/#servicios">Servicios</a><a href="/#sedes">Sedes</a><a href="/#planes">Planes</a></nav>
+        <div class="mobile-account-actions">
+          <a th:if="${!signedIn}" class="btn btn-secondary" href="/login">Ingresar / Registrarse</a>
+          <a th:if="${signedIn}" class="btn btn-secondary" th:href="${isAdmin?'/admin':'/account'}" th:text="${isAdmin?'Administrar':'Mi cuenta'}"></a>
+          <form th:if="${signedIn}" th:action="@{/logout}" method="post"><button class="btn btn-ghost" type="submit">Cerrar sesión</button></form>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>
 <div th:fragment="notices"><div class="success-banner" role="status" th:if="${success}" th:text="${success}"></div><div class="error-banner" role="alert" th:if="${message}" th:text="${message}"></div></div>
 <nav class="portal-nav" th:fragment="clientnav" aria-label="Mi cuenta"><a href="/account">Resumen</a><a href="/account/renew">Renovar / cambiar plan</a><a href="/account/payments">Mis pagos</a><a href="/account/requests">Solicitudes</a><a href="/account/preferences">WhatsApp</a></nav>
-<nav class="portal-nav" th:fragment="adminnav" aria-label="Administración"><a href="/admin">Dashboard</a><a href="/admin/clients">Clientes</a><a href="/admin/payments">Pagos</a><a href="/admin/requests">Solicitudes</a><a href="/admin/plans">Planes</a><a href="/admin/reminders">Recordatorios</a><a href="/admin/audit">Auditoría</a></nav>
+<nav class="portal-nav" th:fragment="adminnav" aria-label="Administración"><a href="/admin">Dashboard</a><a href="/admin/access">Entradas y aforo</a><a href="/admin/clients">Clientes</a><a href="/admin/payments">Pagos</a><a href="/admin/requests">Solicitudes</a><a href="/admin/plans">Planes</a><a href="/admin/reminders">Recordatorios</a><a href="/admin/audit">Auditoría</a></nav>
 <div class="progress" th:fragment="progress(step)" aria-label="Progreso de contratación"><div class="progress-step" th:each="name,s:${ {'Plan','Identificación','Pago','Confirmación'} }" th:classappend="${s.count<=step?'is-active':''}"><span th:text="${s.count}"></span><b th:text="${name}"></b></div></div>
 <div th:fragment="selected" class="selected-plan" th:if="${selected}"><span>PLAN SELECCIONADO</span><b th:text="${selected.name}"></b><strong th:text="'S/ '+${selected.price}"></strong></div>
 <div th:fragment="reviews" class="review-history"><h2>Historial de revisión</h2><p th:if="${#lists.isEmpty(reviews)}">Aún no hay revisiones.</p><article class="request-item" th:each="review:${reviews}"><span class="status" th:text="${@ui.label(review.toStatus)}"></span><p><b th:text="${@ui.user(review.reviewerId)}"></b> · <time th:text="${@ui.date(review.createdAt)}"></time></p><p th:text="${review.comment}"></p></article></div>

@@ -8,7 +8,7 @@ const output='docs/screenshots';
 fs.mkdirSync(output,{recursive:true});
 const check=async(page,text)=>assert.ok((await page.locator('body').innerText()).toLocaleLowerCase().includes(text.toLocaleLowerCase()),text);
 async function login(page,who,secret){await page.goto(base+'/login');await page.getByLabel('Correo o DNI').fill(who);await page.getByLabel('Contraseña',{exact:true}).fill(secret);await Promise.all([page.waitForURL(url=>!url.pathname.endsWith('/login')),page.getByRole('button',{name:'Ingresar'}).click()]);}
-async function manual(page,operation){await page.locator('[name=operation]').fill(operation);await page.locator('[name=proof]').setInputFiles({name:'comprobante.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.4\n1 0 obj <<>> endobj\n%%EOF')});await page.locator('[name=accepted]').check();await Promise.all([page.waitForURL(/\/account\/payments\/\d+$/),page.getByRole('button',{name:'Enviar pago'}).click()]);return page.url().split('/').pop();}
+async function manual(page,operation){await page.locator('[name=branchId]').selectOption('1');await page.locator('[name=operation]').fill(operation);await page.locator('[name=proof]').setInputFiles({name:'comprobante.pdf',mimeType:'application/pdf',buffer:Buffer.from('%PDF-1.4\n1 0 obj <<>> endobj\n%%EOF')});await page.locator('[name=accepted]').check();await Promise.all([page.waitForURL(/\/account\/payments\/\d+$/),page.getByRole('button',{name:'Enviar pago'}).click()]);return page.url().split('/').pop();}
 (async()=>{
  const browser=await chromium.launch({channel:'msedge',headless:true});
  const context=await browser.newContext({viewport:{width:1440,height:1000}});

@@ -13,22 +13,46 @@ import java.time.*;
 import java.util.*;
 @Controller @RequestMapping("/admin")
 public class AdminController {
- private final Store db;private final GymService gym;private final IdentityService identity;private final ClientController client;
- public AdminController(Store db,GymService gym,IdentityService identity,ClientController client){this.db=db;this.gym=gym;this.identity=identity;this.client=client;}
+ private final Store db;private final GymService gym;private final IdentityService identity;private final ClientController client;private final BranchService branches;
+ public AdminController(Store db,GymService gym,IdentityService identity,ClientController client,BranchService branches){this.db=db;this.gym=gym;this.identity=identity;this.client=client;this.branches=branches;}
  @GetMapping String dashboard(Model m){
   m.addAttribute("customers",db.count("select count(u) from UserAccount u where exists(select r from UserRoleEntry r where r.userId=u.id and r.roleId=1)"));
   m.addAttribute("active",db.count("select count(m) from Membership m where m.expiresOn>?1",gym.today()));
   m.addAttribute("expired",db.count("select count(m) from Membership m where m.expiresOn<=?1",gym.today()));
   m.addAttribute("pending",db.count("select count(p) from Payment p where p.status='PENDING'"));
-  m.addAttribute("requestsCount",db.count("select count(r) from FreezeRequest r where r.status in ('SENT','IN_REVIEW')"));return "admin/dashboard";
+  m.addAttribute("requestsCount",db.count("select count(r) from FreezeRequest r where r.status in ('SENT','IN_REVIEW')"));m.addAttribute("branchSummaries",branches.summaries());m.addAttribute("unassignedActive",branches.unassignedActiveMembers());return "admin/dashboard";
+ }
+ @GetMapping("/access") String access(@RequestParam(required=false) Long branchId,Model m){
+  if(branchId!=null)db.get(Branch.class,branchId);
+  m.addAttribute("branchId",branchId);
+  m.addAttribute("branches",gym.branches());
+  m.addAttribute("branchSummaries",branches.summaries());
+  m.addAttribute("presence",branches.presentAt(branchId));
+  return "admin/access";
+ }
+ @PostMapping("/access") String checkIn(@RequestParam String dni,@RequestParam Long branchId,Authentication a,RedirectAttributes flash){
+  try{branches.checkIn(dni,branchId,identity.current(a).id);flash.addFlashAttribute("success","Entrada registrada correctamente.");}
+  catch(IllegalArgumentException e){flash.addFlashAttribute("message",e.getMessage());}
+  return "redirect:/admin/access?branchId="+branchId;
+ }
+ @PostMapping("/access/{id}/checkout") String checkOut(@PathVariable Long id,@RequestParam(required=false) Long branchId,Authentication a,RedirectAttributes flash){
+  try{branches.checkOut(id,identity.current(a).id);flash.addFlashAttribute("success","Salida registrada correctamente.");}
+  catch(IllegalArgumentException e){flash.addFlashAttribute("message",e.getMessage());}
+  return "redirect:/admin/access"+(branchId==null?"":"?branchId="+branchId);
  }
  @GetMapping("/{section:clients|payments|requests|plans|reminders|audit}") String list(@PathVariable String section,@RequestParam(defaultValue="") String q,
   @RequestParam(defaultValue="") String status,@RequestParam(defaultValue="") String kind,@RequestParam(required=false) LocalDate from,@RequestParam(required=false) LocalDate to,
-  @RequestParam(defaultValue="0") int page,Model m){
+  @RequestParam(defaultValue="0") int page,@RequestParam(required=false) Long branchId,Model m){
   if(q.length()>100||status.length()>30||kind.length()>20)throw new IllegalArgumentException("Filtro inválido.");
   page=Math.max(0,Math.min(page,100000));String entity=switch(section){case "clients"->"UserAccount";case "payments"->"Payment";case "requests"->"FreezeRequest";case "plans"->"Plan";case "reminders"->"Reminder";default->"AuditEvent";};
   String where=" where 1=1";Map<String,Object> params=new HashMap<>();
   if(section.equals("clients"))where+=" and exists(select ur from UserRoleEntry ur where ur.userId=e.id and ur.roleId=1)";
+  if(branchId!=null&&Set.of("clients","payments").contains(section)){
+   if(branchId<0)throw new IllegalArgumentException("Filtro de sede inválido.");
+   if(branchId>0){db.get(Branch.class,branchId);params.put("branchId",branchId);}
+   String branchCondition=branchId==0?"is null":"=:branchId";
+   where+=section.equals("payments")?" and e.branchId "+branchCondition:" and exists(select m from Membership m where m.userId=e.id and m.branchId "+branchCondition+")";
+  }
   if(!q.isBlank()){
    params.put("q","%"+q.toLowerCase(Locale.ROOT)+"%");
    where+=section.equals("clients")?" and (lower(e.name) like :q or lower(e.email) like :q or e.dni like :q)":section.equals("plans")?" and lower(e.name) like :q":section.equals("audit")?" and lower(e.action) like :q":" and exists(select u from UserAccount u where u.id=e.userId and (lower(u.name) like :q or u.dni like :q or lower(u.email) like :q))";
@@ -43,7 +67,7 @@ public class AdminController {
   var query=db.em().createQuery("select e from "+entity+" e"+where+" order by e.id desc");var count=db.em().createQuery("select count(e) from "+entity+" e"+where,Long.class);
   params.forEach((k,v)->{query.setParameter(k,v);count.setParameter(k,v);});long total=count.getSingleResult();
   m.addAttribute("rows",query.setFirstResult(page*10).setMaxResults(10).getResultList());m.addAttribute("section",section);m.addAttribute("page",page);m.addAttribute("hasNext",total>(page+1)*10);m.addAttribute("total",total);
-  m.addAttribute("q",q);m.addAttribute("filterStatus",status);m.addAttribute("kind",kind);m.addAttribute("from",from);m.addAttribute("to",to);return "admin/list";
+  m.addAttribute("q",q);m.addAttribute("filterStatus",status);m.addAttribute("kind",kind);m.addAttribute("from",from);m.addAttribute("to",to);m.addAttribute("branches",db.list(Branch.class,"select b from Branch b order by b.id"));m.addAttribute("branchId",branchId);return "admin/list";
  }
  @GetMapping("/clients/{id}") String customer(@PathVariable Long id,Model m){m.addAttribute("customer",db.get(UserAccount.class,id));m.addAttribute("membership",gym.membership(id).orElse(null));m.addAttribute("payments",db.list(Payment.class,"select p from Payment p where p.userId=?1 order by p.id desc",id));m.addAttribute("requests",db.list(FreezeRequest.class,"select r from FreezeRequest r where r.userId=?1 order by r.id desc",id));return "admin/client";}
  @GetMapping("/payments/{id}") String payment(@PathVariable Long id,Model m){client.paymentModel(db.get(Payment.class,id),m);return "payment";}

@@ -1,6 +1,6 @@
 # Diccionario de datos
 
-Esquema final después de V1–V3. TIMESTAMP(6) guarda instantes UTC; DATE representa calendario de Lima. Importes DECIMAL(10,2), moneda PEN. Las PK implican NOT NULL. Las migraciones SQL son la definición ejecutable.
+Esquema final después de V1–V5. TIMESTAMP(6) guarda instantes UTC; DATE representa calendario de Lima. Importes DECIMAL(10,2), moneda PEN. Las PK implican NOT NULL. Las migraciones SQL son la definición ejecutable.
 
 Calculados sin columna: estado activo/vencido, días restantes, reminder.dueOn, payment.appliedUntil y request.extensionDays.
 
@@ -16,6 +16,7 @@ Calculados sin columna: estado activo/vencido, días restantes, reminder.dueOn, 
 | password_hash | VARCHAR(255) NOT NULL | Hash BCrypt; nunca contraseña legible. |
 | demo | BOOLEAN NOT NULL DEFAULT FALSE | Marca de cuenta ficticia afectada por reinicio demo. |
 | created_at | TIMESTAMP(6) NOT NULL | Instante de creación/revisión/auditoría en UTC. |
+| branch_id | BIGINT | Sede asignada a la membresía; FK a branches.id. NULL en membresías históricas sin sede asignada. |
 
 ## roles
 
@@ -88,12 +89,16 @@ Claves y restricciones:
 | idempotency_key | VARCHAR(36) NOT NULL UNIQUE | UUID del resumen emitido por el servidor. |
 | created_at | TIMESTAMP(6) NOT NULL | Instante de creación/revisión/auditoría en UTC. |
 | applied_from | DATE | Base calendario al confirmar; NULL antes de confirmar. |
+| branch_id | BIGINT | Sede elegida al pagar; FK a branches.id. |
+| branch_name | VARCHAR(100) | Nombre de sede guardado como instantánea del pago. |
 
 Claves y restricciones:
 
 - FOREIGN KEY(user_id) REFERENCES users(id)
 - FOREIGN KEY(plan_id) REFERENCES plans(id)
+- FOREIGN KEY(branch_id) REFERENCES branches(id)
 - UNIQUE(method,operation_number)
+- CONSTRAINT ck_payment_branch CHECK((branch_id IS NULL AND branch_name IS NULL) OR (branch_id IS NOT NULL AND branch_name IS NOT NULL))
 - CONSTRAINT ck_payment_method CHECK(method IN ('CARD_TEST','WALLET','TRANSFER'))
 - CONSTRAINT ck_payment_status CHECK(status IN ('PENDING','CONFIRMED','REJECTED'))
 - CONSTRAINT ck_payment_amount CHECK(amount>0)
@@ -122,12 +127,45 @@ Claves y restricciones:
 | payment_id | BIGINT NOT NULL UNIQUE | Pago relacionado; FK a payments.id. |
 | started_on | DATE NOT NULL | Inicio del período continuo de membresía. |
 | expires_on | DATE NOT NULL | Vencimiento exclusivo acumulado. |
+| branch_id | BIGINT | Sede actual asignada; FK a branches.id. NULL si una membresía histórica aún no tiene sede. |
 
 Claves y restricciones:
 
 - FOREIGN KEY(user_id) REFERENCES users(id)
 - FOREIGN KEY(payment_id) REFERENCES payments(id)
+- FOREIGN KEY(branch_id) REFERENCES branches(id)
 - CONSTRAINT ck_membership_dates CHECK(expires_on>=started_on)
+
+## branches
+
+| Columna | Tipo / restricciones | Descripción |
+|---|---|---|
+| id | BIGINT AUTO_INCREMENT PRIMARY KEY | Identificador técnico de la sede. |
+| name | VARCHAR(100) NOT NULL UNIQUE | Nombre de la sede. |
+| active | BOOLEAN NOT NULL DEFAULT TRUE | Disponibilidad de la sede. |
+| capacity | INT NOT NULL DEFAULT 30 | Aforo máximo; debe ser positivo. |
+
+Claves y restricciones:
+
+- CONSTRAINT ck_branch_capacity CHECK(capacity>0)
+
+## attendance
+
+| Columna | Tipo / restricciones | Descripción |
+|---|---|---|
+| id | BIGINT AUTO_INCREMENT PRIMARY KEY | Identificador técnico de la visita. |
+| branch_id | BIGINT NOT NULL | Sede de la entrada; FK a branches.id. |
+| user_id | BIGINT NOT NULL | Socio que ingresó; FK a users.id. |
+| checked_in_at | TIMESTAMP(6) NOT NULL | Instante UTC de entrada. |
+| checked_out_at | TIMESTAMP(6) | Instante UTC de salida; NULL mientras el socio permanece dentro. |
+
+Claves y restricciones:
+
+- FOREIGN KEY(branch_id) REFERENCES branches(id)
+- FOREIGN KEY(user_id) REFERENCES users(id)
+- CONSTRAINT ck_attendance_times CHECK(checked_out_at IS NULL OR checked_out_at>=checked_in_at)
+
+La aplicación valida membresía vigente y asignada a la sede, impide más de una entrada abierta por socio y serializa los ingresos para respetar el aforo.
 
 ## freeze_requests
 
@@ -263,6 +301,10 @@ PK y UNIQUE crean índices para identidad, acceso por correo/DNI, idempotencia y
 | ix_payments_status_created | Cola por estado y antigüedad. |
 | ix_payments_user_created | Historial de pagos del socio. |
 | ix_membership_expiry | Conteos de activas/vencidas. |
+| ix_membership_branch_expiry | Membresías por sede y vencimiento. |
+| ix_payment_branch_status | Pagos por sede y estado. |
+| ix_attendance_branch_current | Personas presentes por sede y hora de entrada. |
+| ix_attendance_user_current | Entradas abiertas por socio. |
 | ix_freeze_status_date | Solicitudes por estado y período. |
 | ix_freeze_user_created | Historial del cliente. |
 | ix_review_payment / ix_review_request | Revisiones cronológicas por operación. |

@@ -21,15 +21,21 @@ import java.util.*;
   var draft=(GymService.Draft)s.getAttribute("draft");if(draft==null){draft=gym.draft(plan);s.setAttribute("draft",draft);}
   checkoutModel(identity.current(a).id,draft,m);return "checkout";
  }
- private void checkoutModel(Long user,GymService.Draft draft,Model m){m.addAttribute("draft",draft);var from=gym.proposedFrom(user);m.addAttribute("from",from);m.addAttribute("until",GymService.addMonths(from,draft.months()));}
+ private void checkoutModel(Long user,GymService.Draft draft,Model m){
+  m.addAttribute("draft",draft);var branches=gym.branches();m.addAttribute("branches",branches);
+  if(!m.containsAttribute("branchId"))m.addAttribute("branchId",gym.membership(user).map(member->member.branchId).orElse(null));
+  Object branchId=m.asMap().get("branchId");
+  m.addAttribute("selectedBranchName",branches.stream().filter(branch->Objects.equals(branch.id,branchId)).map(branch->branch.name).findFirst().orElse("Selecciona una sede"));
+  var from=gym.proposedFrom(user);m.addAttribute("from",from);m.addAttribute("until",GymService.addMonths(from,draft.months()));
+ }
  @PostMapping("/checkout") String pay(Authentication a,HttpSession s,@RequestParam String key,@RequestParam String method,@RequestParam(defaultValue="") String operation,
-  @RequestParam(defaultValue="false") boolean accepted,@RequestParam(required=false) MultipartFile proof,Model m){
+  @RequestParam(defaultValue="false") boolean accepted,@RequestParam(required=false) MultipartFile proof,@RequestParam(required=false) Long branchId,Model m){
   var draft=(GymService.Draft)s.getAttribute("draft");
   if(draft==null||!draft.key().equals(key))throw new IllegalArgumentException("La sesión de contratación cambió. Elige de nuevo el plan.");
   Long user=identity.current(a).id;
   try{if(!accepted)throw new IllegalArgumentException("Confirma que revisaste el resumen y el método de pago.");
-   var p=gym.pay(user,draft,method,operation,proof);s.removeAttribute("selectedPlan");return "redirect:/account/payments/"+p.id;
-  }catch(IllegalArgumentException e){m.addAttribute("message",e.getMessage());m.addAttribute("operation",operation);m.addAttribute("method",method);checkoutModel(user,draft,m);return "checkout";}
+   var p=gym.pay(user,branchId,draft,method,operation,proof);s.removeAttribute("selectedPlan");return "redirect:/account/payments/"+p.id;
+  }catch(IllegalArgumentException e){m.addAttribute("message",e.getMessage());m.addAttribute("operation",operation);m.addAttribute("method",method);m.addAttribute("branchId",branchId);checkoutModel(user,draft,m);return "checkout";}
  }
  @GetMapping("/account") String account(Authentication a,Model m){Long user=identity.current(a).id;var member=gym.membership(user).orElse(null);m.addAttribute("membership",member);
   if(member!=null){m.addAttribute("contract",db.get(Payment.class,member.paymentId));m.addAttribute("days",Math.max(0,ChronoUnit.DAYS.between(gym.today(),member.expiresOn)));}

@@ -7,6 +7,8 @@ erDiagram
     plans ||--o{ payments : references
     payments ||--|{ contractBenefits : snapshots
     users ||--o| memberships : owns
+    branches |o--o{ memberships : assigns
+    branches |o--o{ payments : snapshots
     payments ||--o| memberships : latestConfirmed
     users ||--o{ freezeRequests : requests
     users ||--o{ privateFiles : owns
@@ -19,6 +21,8 @@ erDiagram
     users ||--o{ reminders : receives
     users |o--o{ auditEvents : actor
     users ||--o{ resetTokens : recovers
+    branches ||--o{ attendance : records
+    users ||--o{ attendance : attends
     users {
         bigint id PK
         varchar dni UK
@@ -75,8 +79,22 @@ erDiagram
         bigint id PK
         bigint user_id FK,UK
         bigint payment_id FK,UK
+        bigint branch_id FK
         date started_on
         date expires_on
+    }
+    branches {
+        bigint id PK
+        varchar name UK
+        boolean active
+        int capacity
+    }
+    attendance {
+        bigint id PK
+        bigint branch_id FK
+        bigint user_id FK
+        timestamp checked_in_at
+        timestamp checked_out_at
     }
     freezeRequests {
         bigint id PK

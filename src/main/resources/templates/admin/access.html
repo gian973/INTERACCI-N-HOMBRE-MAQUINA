@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Entradas y aforo')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main id="main" class="portal-page" tabindex="-1">
+<div class="portal-container">
+<div th:replace="~{fragments :: notices}"></div>
+<nav th:replace="~{fragments :: adminnav}"></nav>
+<div class="page-title"><div><span class="eyebrow">CONTROL DE ACCESO</span><h1>Entradas, salidas y aforo</h1><p>Solo socios con membresía vigente y asignada a la sede pueden ingresar. El aforo máximo es de 30 personas por sede.</p></div></div>
+<section class="branch-stats-grid" aria-label="Aforo por sede">
+<article class="branch-stat" th:each="summary:${branchSummaries}">
+<h2 th:text="${summary.branch.name}"></h2>
+<strong class="branch-active-count" th:text="${summary.present}+' / '+${summary.branch.capacity}"></strong><span>personas presentes / aforo máximo</span>
+<p><b th:text="${summary.available}"></b> espacios disponibles</p>
+<a class="btn btn-secondary" th:href="@{/admin/access(branchId=${summary.branch.id})}">Ver sede</a>
+</article>
+</section>
+<section class="card">
+<h2>Registrar entrada</h2>
+<p>La entrada queda asociada al socio y a su membresía. Si el aforo está completo, el ingreso se bloquea.</p>
+<form class="access-checkin-form" th:action="@{/admin/access}" method="post">
+<label class="field"><span>DNI del socio</span><input name="dni" inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" autocomplete="off" required></label>
+<label class="field"><span>Sede</span><select name="branchId" required><option value="">Selecciona una sede</option><option th:each="branch:${branches}" th:value="${branch.id}" th:text="${branch.name}" th:selected="${branch.id==branchId}"></option></select></label>
+<button class="btn btn-primary">Registrar entrada</button>
+</form>
+</section>
+<section class="card">
+<div class="admin-title"><div><h2>Personas presentes</h2><p th:text="${#lists.size(presence)}+' persona(s) dentro'"></p></div>
+<form method="get" th:action="@{/admin/access}"><label class="field"><span>Filtrar por sede</span><select name="branchId"><option value="">Todas las sedes</option><option th:each="branch:${branches}" th:value="${branch.id}" th:text="${branch.name}" th:selected="${branch.id==branchId}"></option></select></label><button class="btn btn-secondary">Aplicar filtro</button></form>
+</div>
+<div class="table-wrap"><table>
+<thead><tr><th>Socio</th><th>DNI</th><th>Sede</th><th>Hora de entrada</th><th>Acción</th></tr></thead>
+<tbody>
+<tr th:each="row:${presence}"><td th:text="${row.member.name}"></td><td th:text="${row.member.dni}"></td><td th:text="${row.branch.name}"></td><td th:text="${@ui.date(row.attendance.checkedInAt)}"></td><td><form th:action="@{/admin/access/{id}/checkout(id=${row.attendance.id})}" method="post"><input type="hidden" name="branchId" th:value="${branchId}"><button class="btn btn-secondary">Registrar salida</button></form></td></tr>
+<tr th:if="${#lists.isEmpty(presence)}"><td colspan="5" class="empty-state">No hay personas presentes en esta selección.</td></tr>
+</tbody></table></div>
+</section>
+</div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

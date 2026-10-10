@@ -61,6 +61,8 @@ También puedes construir con `mvnw.cmd package` y ejecutar:
 - Inicio, servicios, sedes y planes conservan identidad, contenido y precios del prototipo: S/ 89.99, S/ 114.99 y S/ 179.99.
 - Registro con validación, acceso por correo/DNI, BCrypt, mostrar contraseña y recuperación con token temporal de un uso.
 - Selección de plan conservada durante registro e ingreso; resumen, meses calendario y fechas propuestas antes de pagar.
+- Selección obligatoria de sede al pagar, visible en el contrato y la cuenta; el administrador consulta socios activos por sede y filtra clientes y pagos. Ver [reglas de sedes](docs/SEDES.md).
+- Control administrativo de entradas/salidas en `/admin/access`, únicamente para socios con membresía vigente y asignada a esa sede. El aforo inicial es de 30 personas por sede; al llenarse se bloquean nuevas entradas. Cada movimiento queda en auditoría.
 - Tarjeta de prueba; pagos Yape/Plin/transferencia con referencia y archivo privado, pendientes de revisión.
 - Membresía, renovación/cambio, historial de pagos, solicitudes y preferencias persistentes.
 - Revisión administrativa, rechazo con motivo, historial de actor/fecha, filtros y paginación, edición/desactivación de planes sin alterar contratos.
@@ -95,9 +97,9 @@ Leer [POLITICAS.md](docs/POLITICAS.md) antes de habilitar efectos de congelamien
 .\mvnw.cmd verify
 ```
 
-La suite usa H2 en memoria por defecto. Para MySQL, definir TEST_DB_URL, TEST_DB_USER y TEST_DB_PASSWORD con una base exclusiva de pruebas, y ejecutar el mismo comando. Flyway aplica V1–V3; Hibernate valida el esquema.
+La suite usa H2 en memoria por defecto. Para MySQL, definir TEST_DB_URL, TEST_DB_USER y TEST_DB_PASSWORD con una base exclusiva de pruebas, y ejecutar el mismo comando. Flyway aplica V1–V5; Hibernate valida el esquema.
 
-Incluye 14 pruebas de integración: recorridos cliente/administrador, idempotencia, concurrencia, permisos y CSRF, archivos, calendario, recuperación, ambas políticas de congelamiento, precio histórico y recordatorios.
+Incluye pruebas de integración para recorridos cliente/administrador, idempotencia, concurrencia, permisos y CSRF, archivos, calendario, recuperación, políticas de congelamiento, precio histórico, recordatorios y control de entradas/salidas con aforo por sede.
 
 Pruebas de navegador opcionales (Node y Microsoft Edge instalados):
 ```powershell

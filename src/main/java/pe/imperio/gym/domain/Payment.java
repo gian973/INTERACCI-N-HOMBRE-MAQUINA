@@ -12,6 +12,11 @@ public class Payment {
  public Long getPlanId(){return planId;}
  @Column(name="plan_name") public String planName;
  public String getPlanName(){return planName;}
+ @Column(name="branch_id") public Long branchId;
+ public Long getBranchId(){return branchId;}
+ @Column(name="branch_name") public String branchName;
+ public String getBranchName(){return branchName;}
+ public String getBranchLabel(){return branchName==null?"Sin sede registrada":branchName;}
  @Column(name="months") public int months;
  public int getMonths(){return months;}
  @Column(name="amount", precision=10, scale=2) public BigDecimal amount;

@@ -10,6 +10,8 @@ public class Membership {
  public Long getUserId(){return userId;}
  @Column(name="payment_id") public Long paymentId;
  public Long getPaymentId(){return paymentId;}
+ @Column(name="branch_id") public Long branchId;
+ public Long getBranchId(){return branchId;}
  @Column(name="started_on") public LocalDate startedOn;
  public LocalDate getStartedOn(){return startedOn;}
  @Column(name="expires_on") public LocalDate expiresOn;
