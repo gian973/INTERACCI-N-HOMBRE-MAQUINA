@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import java.time.*;
 @Service @Profile({"dev","test"}) @Transactional
 public class DemoService {
  private final Store db;private final UserRepository users;private final IdentityService identity;private final GymService gym;

@@ -1,7 +1,6 @@
 package pe.imperio.gym.web;
 import pe.imperio.gym.data.*;
 import pe.imperio.gym.service.*;
-import pe.imperio.gym.domain.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;

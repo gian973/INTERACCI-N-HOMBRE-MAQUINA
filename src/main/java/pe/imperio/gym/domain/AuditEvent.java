@@ -1,7 +1,6 @@
 package pe.imperio.gym.domain;
 import jakarta.persistence.*;
 import java.time.*;
-import java.math.BigDecimal;
 @Entity @Table(name="audit_events")
 public class AuditEvent {
  @Id @GeneratedValue(strategy=GenerationType.IDENTITY) public Long id;
