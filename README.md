@@ -72,7 +72,11 @@ También puedes construir con `mvnw.cmd package` y ejecutar:
 
 ## Simulaciones y credenciales externas
 
-La **tarjeta siempre es de prueba**: no hay pasarela real, no solicita ni guarda PAN/CVV. Los pagos manuales registran una operación declarada y su comprobante; no consultan al banco, Yape o Plin, ni se incluyen cuentas de cobro inventadas.
+La tarjeta de prueba no realiza cobros. Culqi Checkout aparece como método adicional cuando están configuradas sus llaves; sus datos de tarjeta se tokenizan en Culqi y no se envían ni guardan en Imperio Gym. El servidor crea el cobro con la llave privada y activa la membresía solo si la API de Culqi confirma la operación. Yape/Plin y transferencia siguen siendo pagos manuales pendientes de revisión. Sus datos de destino predeterminados son ficticios y no deben usarse para enviar dinero.
+
+Configura `PAYMENT_WALLET_PHONE`, `PAYMENT_HOLDER`, `PAYMENT_BANK` y `PAYMENT_CCI` en `.env.local` para cambiar los destinos. El CCI se conserva como texto de 20 dígitos, incluidos sus ceros iniciales. Mantén `PAYMENT_DETAILS_DEMO=true` durante las pruebas; cambia a `false` únicamente después de reemplazar los ejemplos por datos reales verificados.
+
+Para habilitar Culqi, configura `CULQI_PUBLIC_KEY` y `CULQI_SECRET_KEY` en `.env.local` con llaves del mismo ambiente (por ejemplo, `pk_test_...` y `sk_test_...` para pruebas). La llave privada se usa solo en el servidor; nunca la publiques, la incluyas en el frontend ni la compartas por chat. Prueba primero con credenciales y tarjetas de prueba de Culqi. Usa llaves `pk_live_...`/`sk_live_...` solo cuando tu cuenta y operación estén listas para cobros reales. La integración depende de acceso a Culqi Checkout y a la API `api.culqi.com`; la confirmación de producción debe verificarse con credenciales propias antes de habilitarla a clientes.
 
 WhatsApp usa `WHATSAPP_PROVIDER=simulated` por defecto: no envía mensajes. Para Business se requieren WHATSAPP_TOKEN, WHATSAPP_PHONE_ID, WHATSAPP_API_VERSION y WHATSAPP_TEMPLATE, una plantilla aprobada en español con parámetros nombre/fecha/días y consentimiento vigente. El adaptador no ha sido verificado con credenciales reales. SENT significa aceptación de la API, no entrega confirmada; no hay webhook. No reintenta automáticamente errores o resultados inciertos.
 

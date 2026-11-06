@@ -614,7 +614,7 @@ function Home({ onChoose, onLogin }: { onChoose: (plan: Plan) => void; onLogin: 
           <h2>Tu entrenamiento, más cerca</h2>
         </div>
         <div className="location-grid">
-          {["San Miguel", "Pueblo Libre", "Magdalena"].map((location) => (
+          {["San Miguel", "Comas", "Magdalena"].map((location) => (
             <article key={location}><span>LIMA</span><h3>{location}</h3><p>Lunes a domingo · 6:00 a 23:00</p></article>
           ))}
         </div>

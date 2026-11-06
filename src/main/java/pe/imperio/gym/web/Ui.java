@@ -8,7 +8,7 @@ import java.util.*;
 @Component("ui") public class Ui {
  private final Store db;public Ui(Store db){this.db=db;}
  public String label(String v){if(v==null)return "—";return switch(v){
- case "PENDING"->"Pendiente de validación";case "CONFIRMED"->"Confirmado";case "REJECTED"->"Rechazada";case "SENT"->"Enviada";case "IN_REVIEW"->"En revisión";case "APPROVED"->"Aprobada";case "HEALTH"->"Salud";case "TRAVEL"->"Viaje";case "CARD_TEST"->"Tarjeta de prueba";case "WALLET"->"Yape / Plin";case "TRANSFER"->"Transferencia";case "SCHEDULED"->"Programado";case "CANCELLED"->"Cancelado";case "SIMULATED"->"Simulado";case "FAILED"->"Fallido";default->v;};}
+ case "PENDING"->"Pendiente de validación";case "CONFIRMED"->"Confirmado";case "REJECTED"->"Rechazada";case "SENT"->"Enviada";case "IN_REVIEW"->"En revisión";case "APPROVED"->"Aprobada";case "HEALTH"->"Salud";case "TRAVEL"->"Viaje";case "CARD_TEST"->"Tarjeta de prueba";case "CULQI"->"Tarjeta (Culqi)";case "WALLET"->"Yape / Plin";case "TRANSFER"->"Transferencia";case "SCHEDULED"->"Programado";case "CANCELLED"->"Cancelado";case "SIMULATED"->"Simulado";case "FAILED"->"Fallido";default->v;};}
  public String date(java.time.temporal.TemporalAccessor date){return date==null?"—":date instanceof Instant i?DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.of("America/Lima")).format(i):DateTimeFormatter.ofPattern("dd/MM/yyyy").format(date);}
  public String user(Long id){return id==null?"Sistema":db.get(UserAccount.class,id).name;}
  public String branch(Long id){return id==null?"Sin sede registrada":db.get(Branch.class,id).name;}

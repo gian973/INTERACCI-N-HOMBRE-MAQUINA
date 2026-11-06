@@ -51,6 +51,15 @@ app:
   mail-from: ${MAIL_FROM:no-reply@example.invalid}
   freeze-policy: ${FREEZE_POLICY:NO_EXTENSION}
   demo-password: ${DEMO_PASSWORD:Imperio2026!}
+  payments:
+    demo: ${PAYMENT_DETAILS_DEMO:true}
+    wallet-phone: ${PAYMENT_WALLET_PHONE:900000000}
+    holder: ${PAYMENT_HOLDER:Imperio Gym (demostración)}
+    bank: ${PAYMENT_BANK:Banco de ejemplo}
+    cci: ${PAYMENT_CCI:00000000000000000000}
+  culqi:
+    public-key: ${CULQI_PUBLIC_KEY:}
+    secret-key: ${CULQI_SECRET_KEY:}
   whatsapp:
     provider: ${WHATSAPP_PROVIDER:simulated}
     token: ${WHATSAPP_TOKEN:}

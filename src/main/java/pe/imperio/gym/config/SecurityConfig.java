@@ -23,7 +23,7 @@ public class SecurityConfig {
     res.sendRedirect(admin?"/admin":req.getSession().getAttribute("selectedPlan")!=null?"/checkout":"/account");
    }).failureUrl("/login?error"))
    .logout(l->l.logoutSuccessUrl("/?logout").invalidateHttpSession(true).deleteCookies("JSESSIONID"))
-   .headers(h->h.contentSecurityPolicy(c->c.policyDirectives("default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"))
+   .headers(h->h.contentSecurityPolicy(c->c.policyDirectives("default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' https://checkout.culqi.com; connect-src 'self' https://api.culqi.com https://checkout.culqi.com; frame-src 'self' https://checkout.culqi.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"))
     .referrerPolicy(r->r.policy(org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy.NO_REFERRER)));
   return http.build();
  }

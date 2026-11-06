@@ -21,6 +21,7 @@ public class GymService {
  public List<Branch> branches(){return db.list(Branch.class,"select b from Branch b where b.active=true order by b.id");}
  public List<String> benefits(Long plan){return db.em().createNativeQuery("select b.label from benefits b join plan_benefits pb on pb.benefit_id=b.id where pb.plan_id=?1 order by b.id",String.class).setParameter(1,plan).getResultList();}
  public record Draft(Long planId,String name,int months,BigDecimal price,List<String> benefits,String key) implements java.io.Serializable {}
+ public record CulqiStart(Payment payment,boolean created) {}
  public Draft draft(Long planId){var p=db.get(Plan.class,planId);if(!p.active)throw new IllegalArgumentException("Este plan ya no está disponible.");return new Draft(p.id,p.name,p.months,p.price,benefits(p.id),UUID.randomUUID().toString());}
  public LocalDate proposedFrom(Long user){return membership(user).map(m->m.expiresOn.isAfter(today())?m.expiresOn:today()).orElse(today());}
  public static LocalDate addMonths(LocalDate base,int months){return base.plusMonths(months);}
@@ -41,6 +42,35 @@ public class GymService {
   if(method.equals("CARD_TEST")){apply(p);audit(user,"SIMULATED_PAYMENT_CONFIRMED","payment",p.id,"Tarjeta de prueba; no se realizó un cobro.");}
   return p;
  }
+ public CulqiStart startCulqiPayment(Long user,Long branchId,Draft draft){
+  db.lock(UserAccount.class,user);
+  var existing=db.one(Payment.class,"select p from Payment p where p.idempotencyKey=?1",draft.key());
+  if(existing.isPresent()){owned(existing.get().userId,user);return new CulqiStart(existing.get(),false);}
+  if(branchId==null)throw new IllegalArgumentException("Selecciona la sede donde entrenarás.");
+  var branch=db.one(Branch.class,"select b from Branch b where b.id=?1 and b.active=true",branchId).orElseThrow(()->new IllegalArgumentException("Selecciona una sede disponible."));
+  var plan=db.get(Plan.class,draft.planId());
+  if(!plan.active)throw new IllegalArgumentException("El plan fue desactivado. Elige otro.");
+  if(plan.price.compareTo(draft.price())!=0||plan.months!=draft.months()||!plan.name.equals(draft.name())||!benefits(plan.id).equals(draft.benefits()))throw new IllegalArgumentException("El plan cambió. Vuelve a seleccionarlo para actualizar el resumen.");
+  var p=new Payment();p.userId=user;p.branchId=branch.id;p.branchName=branch.name;p.planId=plan.id;p.planName=plan.name;p.months=plan.months;p.amount=plan.price;p.method="CULQI";p.status="PENDING";p.idempotencyKey=draft.key();p.createdAt=clock.instant();db.save(p);
+  for(String label:benefits(plan.id)){var b=new ContractBenefit();b.paymentId=p.id;b.label=label;db.save(b);}
+  audit(user,"PAYMENT_CREATED","payment",p.id,"CULQI");
+  return new CulqiStart(p,true);
+ }
+ public void confirmCulqiPayment(Long id,String chargeId){
+  var initial=db.get(Payment.class,id);db.lock(UserAccount.class,initial.userId);var p=db.lock(Payment.class,id);db.em().refresh(p);
+  if(!p.method.equals("CULQI"))throw new IllegalArgumentException("El pago no pertenece a Culqi.");
+  if(p.status.equals("CONFIRMED")&&Objects.equals(p.operationNumber,chargeId))return;
+  if(!p.status.equals("PENDING"))throw new IllegalArgumentException("El pago ya fue resuelto; no se aplicó otra vez.");
+  if(chargeId==null||!chargeId.matches("chr_(test|live)_[A-Za-z0-9_-]{1,70}"))throw new IllegalArgumentException("La confirmación de Culqi no es válida.");
+  p.operationNumber=chargeId;apply(p);audit(p.userId,"CULQI_PAYMENT_CONFIRMED","payment",p.id,"Cobro confirmado por la API de Culqi.");
+ }
+ public void rejectCulqiPayment(Long id){
+  var initial=db.get(Payment.class,id);db.lock(UserAccount.class,initial.userId);var p=db.lock(Payment.class,id);db.em().refresh(p);
+  if(!p.method.equals("CULQI"))throw new IllegalArgumentException("El pago no pertenece a Culqi.");
+  if(p.status.equals("REJECTED"))return;
+  if(!p.status.equals("PENDING"))throw new IllegalArgumentException("El pago ya fue resuelto; no puede rechazarse.");
+  p.status="REJECTED";audit(p.userId,"CULQI_PAYMENT_REJECTED","payment",p.id,"Culqi rechazó el cobro.");
+ }
  private void apply(Payment p){
   if(!p.status.equals("PENDING"))throw new IllegalArgumentException("El pago ya fue resuelto.");
   var m=db.currentOne(Membership.class,"select m from Membership m where m.userId=?1",p.userId).orElseGet(()->{var n=new Membership();n.userId=p.userId;n.startedOn=today();return n;});
@@ -51,6 +81,7 @@ public class GymService {
  @PreAuthorize("hasRole('ADMIN')")
  public void reviewPayment(Long id,Long admin,boolean approve,String comment){
   var initial=db.get(Payment.class,id);db.lock(UserAccount.class,initial.userId);var p=db.lock(Payment.class,id);db.em().refresh(p);
+  if(p.method.equals("CULQI"))throw new IllegalArgumentException("Los pagos de Culqi solo se confirman con la respuesta verificada del proveedor.");
   if(!p.status.equals("PENDING"))throw new IllegalArgumentException("El pago ya fue resuelto; no se aplicó otra vez.");
   validateComment(comment,!approve);
   review(p.id,null,admin,p.status,approve?"CONFIRMED":"REJECTED",comment);

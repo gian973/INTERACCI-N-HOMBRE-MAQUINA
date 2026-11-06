@@ -38,12 +38,25 @@ class GymIntegrationTest {
   String dni=Integer.toString(sequence.incrementAndGet());
   mvc.perform(post("/register").session(session).with(csrf()).param("name","Nuevo Socio").param("dni",dni).param("email",dni+"@example.test").param("phone","+51999000000").param("password","PasswordTest2026!").param("confirmation","PasswordTest2026!")).andExpect(redirectedUrl("/login"));
   mvc.perform(post("/login").session(session).with(csrf()).param("login",dni).param("password","PasswordTest2026!")).andExpect(redirectedUrl("/checkout"));
-  String email=dni+"@example.test";mvc.perform(get("/checkout").session(session).with(user(email).roles("CLIENTE"))).andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("114.99")));
+  String email=dni+"@example.test";mvc.perform(get("/checkout").session(session).with(user(email).roles("CLIENTE"))).andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("114.99"))).andExpect(content().string(org.hamcrest.Matchers.not(org.hamcrest.Matchers.containsString("Tarjeta de crédito o débito (Culqi)"))));
   var draft=(GymService.Draft)session.getAttribute("draft");
   var first=mvc.perform(multipart("/checkout").session(session).with(user(email).roles("CLIENTE")).with(csrf()).param("key",draft.key()).param("branchId","1").param("method","CARD_TEST").param("accepted","true")).andExpect(status().is3xxRedirection()).andReturn().getResponse().getRedirectedUrl();
   mvc.perform(multipart("/checkout").session(session).with(user(email).roles("CLIENTE")).with(csrf()).param("key",draft.key()).param("branchId","1").param("method","CARD_TEST").param("accepted","true")).andExpect(redirectedUrl(first));
   var u=users.findByEmailIgnoreCaseOrDni(email,dni).orElseThrow();assertThat(gym.membership(u.id).orElseThrow().expiresOn).isEqualTo(gym.today().plusMonths(2));
   assertThat(db.count("select count(p) from Payment p where p.userId=?1",u.id)).isEqualTo(1);
+ }
+ @Test @WithMockUser(username="admin@imperio.test",roles="ADMIN")
+ void culqiPaymentConfirmsMembershipOnlyAfterVerifiedCharge(){
+  var u=customer();var draft=gym.draft(1L);var started=gym.startCulqiPayment(u.id,1L,draft);
+  assertThat(started.created()).isTrue();assertThat(started.payment().status).isEqualTo("PENDING");assertThat(gym.membership(u.id)).isEmpty();
+  var duplicate=gym.startCulqiPayment(u.id,1L,draft);assertThat(duplicate.created()).isFalse();assertThat(duplicate.payment().id).isEqualTo(started.payment().id);
+  gym.confirmCulqiPayment(started.payment().id,"chr_test_confirmation");
+  assertThat(db.get(Payment.class,started.payment().id).status).isEqualTo("CONFIRMED");
+  var expiry=gym.membership(u.id).orElseThrow().expiresOn;assertThat(expiry).isEqualTo(gym.today().plusMonths(1));
+  gym.confirmCulqiPayment(started.payment().id,"chr_test_confirmation");
+  assertThat(gym.membership(u.id).orElseThrow().expiresOn).isEqualTo(expiry);
+  assertThatThrownBy(()->gym.reviewPayment(started.payment().id,admin(),true,"Confirmación manual"))
+   .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("respuesta verificada");
  }
  @Test @WithMockUser(username="admin@imperio.test",roles="ADMIN")
  void manualConfirmationRenewalAndRejectionAreAtomic() throws Exception {
@@ -203,14 +216,14 @@ class GymIntegrationTest {
   mvc.perform(post("/checkout").session(session).with(user(u.email).roles("CLIENTE")).with(csrf()).param("key",draft.key()).param("method","CARD_TEST").param("accepted","true"))
    .andExpect(status().isOk()).andExpect(view().name("checkout")).andExpect(content().string(org.hamcrest.Matchers.containsString("Selecciona la sede")));
   mvc.perform(post("/checkout").session(session).with(user(u.email).roles("CLIENTE")).with(csrf()).param("key",draft.key()).param("branchId","2").param("method","CARD_TEST"))
-   .andExpect(status().isOk()).andExpect(model().attribute("branchId",2L)).andExpect(model().attribute("selectedBranchName","Pueblo Libre"));
+   .andExpect(status().isOk()).andExpect(model().attribute("branchId",2L)).andExpect(model().attribute("selectedBranchName","Comas"));
   mvc.perform(post("/checkout").session(session).with(user(u.email).roles("CLIENTE")).with(csrf()).param("key",draft.key()).param("branchId","999999").param("method","CARD_TEST").param("accepted","true"))
    .andExpect(status().isOk()).andExpect(view().name("checkout"));
   mvc.perform(multipart("/checkout").file(proof()).session(session).with(user(u.email).roles("CLIENTE")).with(csrf()).param("key",draft.key()).param("branchId","2").param("method","WALLET").param("operation","SEDE-"+UUID.randomUUID()).param("accepted","true"))
    .andExpect(status().is3xxRedirection());
   var payment=db.one(Payment.class,"select p from Payment p where p.userId=?1",u.id).orElseThrow();
-  assertThat(payment.branchId).isEqualTo(2L);assertThat(payment.branchName).isEqualTo("Pueblo Libre");assertThat(gym.membership(u.id)).isEmpty();
-  mvc.perform(get("/account/payments/"+payment.id).with(user(u.email).roles("CLIENTE"))).andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("Pueblo Libre")));
+  assertThat(payment.branchId).isEqualTo(2L);assertThat(payment.branchName).isEqualTo("Comas");assertThat(gym.membership(u.id)).isEmpty();
+  mvc.perform(get("/account/payments/"+payment.id).with(user(u.email).roles("CLIENTE"))).andExpect(status().isOk()).andExpect(content().string(org.hamcrest.Matchers.containsString("Comas")));
   mvc.perform(get("/admin/payments").param("branchId","2").with(user("admin@imperio.test").roles("ADMIN"))).andExpect(status().isOk()).andExpect(model().attribute("branchId",2L));
  }
  @Test @WithMockUser(username="admin@imperio.test",roles="ADMIN")
@@ -221,7 +234,7 @@ class GymIntegrationTest {
   var draft=gym.draft(2L);var renewal=gym.pay(u.id,2L,draft,"WALLET","SEDE-"+UUID.randomUUID(),proof());
   assertThat(branchSummary(1L).activeMembers()).isEqualTo(firstBefore+1);assertThat(branchSummary(2L).activeMembers()).isEqualTo(secondBefore);
   var originalExpiry=gym.membership(u.id).orElseThrow().expiresOn;
-  gym.reviewPayment(renewal.id,admin(),true,"Confirmado para Pueblo Libre");
+  gym.reviewPayment(renewal.id,admin(),true,"Confirmado para Comas");
   assertThat(gym.membership(u.id).orElseThrow().branchId).isEqualTo(2L);
   assertThat(gym.membership(u.id).orElseThrow().expiresOn).isEqualTo(originalExpiry.plusMonths(2));
   assertThat(branchSummary(1L).activeMembers()).isEqualTo(firstBefore);assertThat(branchSummary(2L).activeMembers()).isEqualTo(secondBefore+1);

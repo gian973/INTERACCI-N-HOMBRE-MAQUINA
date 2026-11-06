@@ -7,6 +7,14 @@
     {
       "name": "app.whatsapp",
       "description": "Configuracion del proveedor de WhatsApp."
+    },
+    {
+      "name": "app.payments",
+      "description": "Datos de destino para pagos manuales."
+    },
+    {
+      "name": "app.culqi",
+      "description": "Configuración de la pasarela de pago Culqi."
     }
   ],
   "properties": [
@@ -65,6 +73,41 @@
       "name": "app.whatsapp.api-version",
       "type": "java.lang.String",
       "description": "Version de la API utilizada por WhatsApp Business."
+    },
+    {
+      "name": "app.payments.demo",
+      "type": "java.lang.Boolean",
+      "description": "Marca los datos de cobro como ficticios para pruebas."
+    },
+    {
+      "name": "app.payments.wallet-phone",
+      "type": "java.lang.String",
+      "description": "Celular de destino para Yape y Plin."
+    },
+    {
+      "name": "app.payments.holder",
+      "type": "java.lang.String",
+      "description": "Titular de los medios de cobro."
+    },
+    {
+      "name": "app.payments.bank",
+      "type": "java.lang.String",
+      "description": "Banco de la cuenta de transferencias."
+    },
+    {
+      "name": "app.payments.cci",
+      "type": "java.lang.String",
+      "description": "Codigo de cuenta interbancaria, conservando ceros iniciales."
+    },
+    {
+      "name": "app.culqi.public-key",
+      "type": "java.lang.String",
+      "description": "Llave pública de Culqi Checkout."
+    },
+    {
+      "name": "app.culqi.secret-key",
+      "type": "java.lang.String",
+      "description": "Llave privada de Culqi para cobrar desde el servidor."
     }
   ]
 }

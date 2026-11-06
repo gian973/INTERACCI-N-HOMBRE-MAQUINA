@@ -14,8 +14,8 @@ import jakarta.servlet.http.HttpSession;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 @Controller public class ClientController {
- private final Store db;private final IdentityService identity;private final GymService gym;private final PlanRepository plans;
- public ClientController(Store db,IdentityService identity,GymService gym,PlanRepository plans){this.db=db;this.identity=identity;this.gym=gym;this.plans=plans;}
+ private final Store db;private final IdentityService identity;private final GymService gym;private final PlanRepository plans;private final CulqiGateway culqi;
+ public ClientController(Store db,IdentityService identity,GymService gym,PlanRepository plans,CulqiGateway culqi){this.db=db;this.identity=identity;this.gym=gym;this.plans=plans;this.culqi=culqi;}
  @GetMapping("/checkout") String checkout(Authentication a,HttpSession s,Model m){
   Long plan=(Long)s.getAttribute("selectedPlan");if(plan==null)return "redirect:/#planes";
   var draft=(GymService.Draft)s.getAttribute("draft");if(draft==null){draft=gym.draft(plan);s.setAttribute("draft",draft);}
@@ -23,17 +23,35 @@ import java.util.*;
  }
  private void checkoutModel(Long user,GymService.Draft draft,Model m){
   m.addAttribute("draft",draft);var branches=gym.branches();m.addAttribute("branches",branches);
+  m.addAttribute("culqiEnabled",culqi.isEnabled());m.addAttribute("culqiPublicKey",culqi.publicKey());m.addAttribute("culqiAmount",draft.price().movePointRight(2).intValueExact());
   if(!m.containsAttribute("branchId"))m.addAttribute("branchId",gym.membership(user).map(member->member.branchId).orElse(null));
   Object branchId=m.asMap().get("branchId");
   m.addAttribute("selectedBranchName",branches.stream().filter(branch->Objects.equals(branch.id,branchId)).map(branch->branch.name).findFirst().orElse("Selecciona una sede"));
   var from=gym.proposedFrom(user);m.addAttribute("from",from);m.addAttribute("until",GymService.addMonths(from,draft.months()));
  }
  @PostMapping("/checkout") String pay(Authentication a,HttpSession s,@RequestParam String key,@RequestParam String method,@RequestParam(defaultValue="") String operation,
-  @RequestParam(defaultValue="false") boolean accepted,@RequestParam(required=false) MultipartFile proof,@RequestParam(required=false) Long branchId,Model m){
+  @RequestParam(defaultValue="false") boolean accepted,@RequestParam(required=false) MultipartFile proof,@RequestParam(required=false) Long branchId,
+  @RequestParam(required=false) String culqiToken,Model m,RedirectAttributes flash){
   var draft=(GymService.Draft)s.getAttribute("draft");
   if(draft==null||!draft.key().equals(key))throw new IllegalArgumentException("La sesión de contratación cambió. Elige de nuevo el plan.");
   Long user=identity.current(a).id;
   try{if(!accepted)throw new IllegalArgumentException("Confirma que revisaste el resumen y el método de pago.");
+   if(method.equals("CULQI")){
+    culqi.validateToken(culqiToken);
+    var started=gym.startCulqiPayment(user,branchId,draft);var p=started.payment();s.removeAttribute("selectedPlan");
+    if(!started.created())return "redirect:/account/payments/"+p.id;
+    try{
+     String chargeId=culqi.charge(culqiToken,p.amount,p.planName,identity.current(a).email);
+     gym.confirmCulqiPayment(p.id,chargeId);
+    }catch(CulqiGateway.PaymentException e){
+     if(e.isDefinitive())gym.rejectCulqiPayment(p.id);
+     flash.addFlashAttribute("message",e.isDefinitive()
+      ?"Culqi rechazó el cobro. Verifica tu método de pago y vuelve a intentarlo seleccionando nuevamente el plan."
+      :"No pudimos verificar el resultado del cobro. No vuelvas a pagar; el pago quedó pendiente de verificación.");
+     return "redirect:/account/payments/"+p.id;
+    }
+    return "redirect:/account/payments/"+p.id;
+   }
    var p=gym.pay(user,branchId,draft,method,operation,proof);s.removeAttribute("selectedPlan");return "redirect:/account/payments/"+p.id;
   }catch(IllegalArgumentException e){m.addAttribute("message",e.getMessage());m.addAttribute("operation",operation);m.addAttribute("method",method);m.addAttribute("branchId",branchId);checkoutModel(user,draft,m);return "checkout";}
  }

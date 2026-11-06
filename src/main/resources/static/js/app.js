@@ -1,8 +1,47 @@
 document.querySelectorAll('[data-password]').forEach(button=>button.addEventListener('click',()=>{const input=document.getElementById(button.dataset.password);input.type=input.type==='password'?'text':'password';button.textContent=input.type==='password'?'Mostrar contraseña':'Ocultar contraseña';button.setAttribute('aria-pressed',input.type==='text');}));
 document.querySelectorAll('[data-back]').forEach(b=>b.addEventListener('click',()=>history.back()));
 const payment=document.getElementById('payment-form');
-if(payment){const update=()=>{const test=payment.querySelector('[name=method]:checked').value==='CARD_TEST';document.getElementById('manual-payment').hidden=test;document.getElementById('card-test').hidden=!test;for(const name of ['operation','proof']){payment.elements[name].required=!test;payment.elements[name].disabled=test;}};payment.querySelectorAll('[name=method]').forEach(r=>r.addEventListener('change',update));update();}
-document.querySelectorAll('form[method=post]').forEach(form=>form.addEventListener('submit',event=>{if(form.dataset.submitting){event.preventDefault();return;}form.dataset.submitting='true';form.setAttribute('aria-busy','true');const button=event.submitter;if(button){if(button.name){const hidden=document.createElement('input');hidden.type='hidden';hidden.name=button.name;hidden.value=button.value;form.append(hidden);}button.disabled=true;button.textContent='Procesando…';}}));
+if(payment){
+ const token=payment.elements.culqiToken;
+ const message=document.getElementById('culqi-message');
+ const update=()=>{const method=payment.querySelector('[name=method]:checked').value;const test=method==='CARD_TEST';const culqi=method==='CULQI';document.getElementById('manual-payment').hidden=test||culqi;document.getElementById('card-test').hidden=!test;document.getElementById('culqi-info').hidden=!culqi;payment.querySelectorAll('[data-payment-method]').forEach(details=>{details.hidden=details.dataset.paymentMethod!==method;});for(const name of ['operation','proof']){payment.elements[name].required=!test&&!culqi;payment.elements[name].disabled=test||culqi;}};
+ payment.querySelectorAll('[name=method]').forEach(r=>r.addEventListener('change',update));update();
+ if(payment.dataset.culqiEnabled==='true'){
+  let culqiConfigured=false;
+  const configureCulqi=()=>{
+   if(!window.Culqi)return false;
+   if(!culqiConfigured){
+    Culqi.publicKey=payment.dataset.culqiPublicKey;
+    Culqi.settings({title:'Imperio Gym',currency:'PEN',amount:Number(payment.dataset.culqiAmount)});
+    Culqi.options({lang:'es',installments:false});
+    culqiConfigured=true;
+   }
+   return true;
+  };
+  payment.addEventListener('submit',event=>{
+   if(payment.querySelector('[name=method]:checked').value!=='CULQI'||token.value)return;
+   event.preventDefault();
+   if(!payment.reportValidity())return;
+   if(!configureCulqi()){
+    message.textContent='No se pudo cargar Culqi. Actualiza la página o intenta más tarde.';
+    message.hidden=false;
+    return;
+   }
+   message.hidden=true;
+   Culqi.open();
+  });
+  window.culqi=()=>{
+   if(Culqi.token){
+    token.value=Culqi.token.id;
+    payment.requestSubmit(payment.querySelector('button[type=submit]'));
+   }else if(Culqi.error){
+    message.textContent=Culqi.error.user_message||'Culqi no pudo validar el medio de pago. Inténtalo nuevamente.';
+    message.hidden=false;
+   }
+  };
+ }
+}
+document.querySelectorAll('form[method=post]').forEach(form=>form.addEventListener('submit',event=>{if(event.defaultPrevented)return;if(form.dataset.submitting){event.preventDefault();return;}form.dataset.submitting='true';form.setAttribute('aria-busy','true');const button=event.submitter;if(button){if(button.name){const hidden=document.createElement('input');hidden.type='hidden';hidden.name=button.name;hidden.value=button.value;form.append(hidden);}button.disabled=true;button.textContent='Procesando…';}}));
 window.addEventListener('pageshow',e=>{if(e.persisted)location.reload();});
 const mobileMenu=document.querySelector('.mobile-nav');
 if(mobileMenu){
